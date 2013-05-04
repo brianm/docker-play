@@ -12,7 +12,7 @@ g
     # yes, we run this twice, in case base isn't here yet
     _exec [docker, "run", "-d", base, "/bin/bash", "-c", "ls"]
     @img, s = _exec [docker, "run", "-d", base, "/bin/bash", "-c", "ls"]
-    raise out unless s
+    raise @out unless s
     _commit
   end
   
