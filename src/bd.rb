@@ -5,7 +5,7 @@ require "open3"
 
 class Docker
   attr_reader :docker, :name
-g  
+
   def initialize base, name, path="/usr/bin/docker"
     @docker = path
     @name = name
