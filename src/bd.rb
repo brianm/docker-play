@@ -5,7 +5,7 @@ require "open3"
 
 class Docker
   attr_reader :docker, :name
-  
+g  
   def initialize base, name, path="/usr/bin/docker"
     @docker = path
     @name = name
@@ -88,8 +88,8 @@ class Docker
   end
 end
 
-Docker.build("base" => "brianm/buildy",
-             :author => "Brian McCallister <brianm@skife.org>") do |b|
+Docker.build("base" => "brianm/buildy") do |b|
+  #:author => "Brian McCallister <brianm@skife.org>") do |b|
   b.bash "touch '*'"
   b.put "./bd.rb" => "/really_long_name.rb",
         "./a_dir" => "/my_sweet_dir"
