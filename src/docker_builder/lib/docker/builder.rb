@@ -9,8 +9,12 @@ class Docker
   def initialize base, name, path="/usr/bin/docker"
     @docker = path
     @name = name
-    # yes, we run this twice, in case base isn't here yet
-    _exec [docker, "run", "-d", base, "/bin/bash", "-c", "ls"]
+
+    _, s = _exec [docker, "images", "|", "grep", base]
+    unless s
+      msg, s = _exec [docker, "pull", base]      
+      raise msg unless s
+    end
     @img, s = _exec [docker, "run", "-d", base, "/bin/bash", "-c", "ls"]
     raise out unless s
     _commit
