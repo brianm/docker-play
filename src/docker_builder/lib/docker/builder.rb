@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require "open3"
-
+require "json"
 
 class Docker
   attr_reader :docker, :name
@@ -9,6 +9,8 @@ class Docker
   def initialize base, name, path="/usr/bin/docker"
     @docker = path
     @name = name
+    @ports = []
+    @env = []
 
     _, s = _exec [docker, "images", "|", "grep", base]
     unless s
@@ -36,7 +38,17 @@ class Docker
   end
   
   def _commit
-    out, s = _exec [docker, "commit", @img, @name]
+    c = [docker, "commit"]
+    run = {"PortSpecs" => @ports,
+           "Env" => @env}
+
+    run['Cmd'] = @cmd if @cmd
+    run['User'] = @user if @user
+    if @maint
+      c << "-m"
+      c << @maint
+    end
+    out, s = _exec [docker, "commit", "-run", JSON.dump(run),  @img, @name]
     raise "commit failed: #{out}" unless s
   end
 
@@ -57,6 +69,30 @@ class Docker
     _wait
     _commit
   end 
+
+  def cmd c
+    @cmd = Array(c)
+    _commit    
+  end
+
+  def maintainer mnt
+    @maint = mnt
+    _commit
+  end
+
+  def expose port
+    puts "exposing #{port}"
+    @ports << port
+    _commit
+  end
+
+  def user usr
+    @user = usr
+  end
+
+  def env hash
+    @env = @env + hash.inject([]) {|a, (k, v)| a << "#{k}=#{v}"}
+  end
 
   # IMG=$(docker run -i -a stdin brianm/ruby /bin/bash -c "/bin/cat >
   # /echo.rb" < ./echo.rb)
@@ -86,9 +122,10 @@ class Docker
     end
   end
 
-  def self.build names, &block
-    base, target = names.inject {|a, (k, v)| [k, v]}
-    d = Docker.new(base, target)
-    block.call(d)
+  def self.build(args)
+    from = args[:from]
+    to = args[:to]
+    d = Docker.new(from, to)
+    yield d
   end
 end

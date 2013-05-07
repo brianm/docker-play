@@ -25,6 +25,9 @@ package "lxc-docker"
 package "linux-image-extra-virtual"
 package "lxc"
 package "bsdtar"
+package "emacs24-nox"
+package "python"
+package "ruby1.9.1"
 
 docker_tarball_path = "/var/tmp/docker-latest.tgz"
 
