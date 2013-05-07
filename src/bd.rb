@@ -24,7 +24,6 @@ Docker.build(from: "brianm/buildy", to: "brianm/buildy") do |b|
 
   # required for honcho
   b.env "USER" => "xncore"
-
   b.cmd ["/bin/bash", "-c", "honcho start"]
   b.expose "8000"
 end
