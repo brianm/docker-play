@@ -92,6 +92,7 @@ class Docker
 
   def env hash
     @env = @env + hash.inject([]) {|a, (k, v)| a << "#{k}=#{v}"}
+    _commit
   end
 
   # IMG=$(docker run -i -a stdin brianm/ruby /bin/bash -c "/bin/cat >
