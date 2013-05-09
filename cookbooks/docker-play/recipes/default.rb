@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-=begin
+
 apt_repository "docker" do
   uri "http://ppa.launchpad.net/dotcloud/lxc-docker/ubuntu"
   distribution "precise" #node['lsb']['codename']
@@ -17,11 +17,16 @@ apt_repository "docker" do
 end
 
 package "linux-image-extra-virtual"
+package "ruby1.9.1"
+package "emacs24-nox"
+package "build-essential"
 package "lxc"
 package "bsdtar"
-package "lxc-docker"
-=end
+package "lxc-docker" do 
+  action :upgrade
+end
 
+=begin
 package "linux-image-extra-virtual"
 package "lxc"
 package "bsdtar"
@@ -33,7 +38,7 @@ docker_tarball_path = "/var/tmp/docker-latest.tgz"
 
 remote_file docker_tarball_path do
   source "http://get.docker.io/builds/Linux/x86_64/docker-latest.tgz"
-  action :create_if_missing
+  #action :create_if_missing
 end
 
 bash "extract_docker" do
@@ -43,7 +48,7 @@ bash "extract_docker" do
     tar -zxf #{docker_tarball_path}
     mv docker-*/docker /usr/bin
   EOH
-  not_if { ::File.exists? "/usr/bin/docker" }
+  #not_if { ::File.exists? "/usr/bin/docker" }
 end
 
 cookbook_file "/etc/init/docker.conf" do
@@ -56,4 +61,4 @@ service "docker" do
   provider Chef::Provider::Service::Upstart
   action [:enable, :start]
 end
-
+=end

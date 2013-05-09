@@ -3,8 +3,8 @@ $:.unshift "./docker_builder/lib"
 
 require "docker/builder"
 
-#Docker.build(from: "ubuntu:12.10", to: "brianm/buildy") do |b|
-Docker.build(from: "brianm/buildy", to: "brianm/buildy") do |b|
+Docker.build(from: "ubuntu:12.10", to: "brianm/buildy") do |b|
+#Docker.build(from: "brianm/buildy", to: "brianm/buildy") do |b|
   b.maintainer "Brian McCallister <brianm@skife.org>"
   b.bash <<-EOS
     DEBIAN_FRONTEND=noninteractive 
