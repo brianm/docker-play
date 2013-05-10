@@ -1,16 +1,14 @@
 #!/usr/bin/env ruby
-$:.unshift "./docker_builder/lib"
-
-require "docker/builder"
+require "docker/maker"
 
 #Docker.build(from: "ubuntu:12.10", to: "brianm/buildy") do |b|
-Docker.build(from: "brianm/buildy", to: "brianm/buildy") do |b|
+Docker.make(from: "brianm/buildy", to: "brianm/buildy") do |b|
   b.maintainer "Brian McCallister <brianm@skife.org>"
   b.env "DEBIAN_FRONTEND" => "noninteractive",
-        "USER" => "xncore"
+        "USER" => "xncore",
+        "PORT" => "8000"
 
   b.bash <<-EOS
-    DEBIAN_FRONTEND=noninteractive 
     apt-get install -y bc
     if [ ! -f /var/apt-updated ]; then
       apt-get update
