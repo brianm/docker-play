@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require "docker/maker"
 
-#Docker.build(from: "ubuntu:12.10", to: "brianm/buildy") do |b|
+#Docker.make(from: "ubuntu:12.10", to: "brianm/buildy") do |b|
 Docker.make(from: "brianm/buildy", to: "brianm/buildy") do |b|
   b.maintainer "Brian McCallister <brianm@skife.org>"
   b.env "DEBIAN_FRONTEND" => "noninteractive",
@@ -15,7 +15,7 @@ Docker.make(from: "brianm/buildy", to: "brianm/buildy") do |b|
       touch /var/apt-updated
     else
       ts=$(echo "$(date +%s) - $(stat -c %Y /var/apt-updated)" | bc)
-      if [ $ts -gt 86400 ]
+      if [ $ts -gt 864000 ]
       then
         apt-get update
         touch /var/apt-updated
