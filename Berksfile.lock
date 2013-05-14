@@ -1,3 +1,0 @@
-cookbook 'docker', :path => '/Users/brianm/src/docker-play/cookbooks/docker'
-cookbook 'apt', :locked_version => '1.9.2'
-cookbook 'docker-play', :path => '/Users/brianm/src/docker-play/cookbooks/docker-play'
