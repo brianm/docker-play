@@ -18,6 +18,7 @@ end
 
 package "linux-image-extra-virtual"
 package "ruby1.9.1"
+gem_package "docker_maker"
 package "emacs24-nox"
 package "build-essential"
 package "lxc"
@@ -25,40 +26,3 @@ package "bsdtar"
 package "lxc-docker" do 
   action :upgrade
 end
-
-=begin
-package "linux-image-extra-virtual"
-package "lxc"
-package "bsdtar"
-package "emacs24-nox"
-package "python"
-package "ruby1.9.1"
-
-docker_tarball_path = "/var/tmp/docker-latest.tgz"
-
-remote_file docker_tarball_path do
-  source "http://get.docker.io/builds/Linux/x86_64/docker-latest.tgz"
-  #action :create_if_missing
-end
-
-bash "extract_docker" do
-  code <<-EOH
-    mkdir -p /var/tmp/docker-extract
-    cd /var/tmp/docker-extract
-    tar -zxf #{docker_tarball_path}
-    mv docker-*/docker /usr/bin
-  EOH
-  #not_if { ::File.exists? "/usr/bin/docker" }
-end
-
-cookbook_file "/etc/init/docker.conf" do
-  source "docker.upstart"
-  owner "root"
-  group "root"
-end
-
-service "docker" do
-  provider Chef::Provider::Service::Upstart
-  action [:enable, :start]
-end
-=end
