@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 require "docker/maker"
-#Docker.make(from: "ubuntu:12.10", to: "brianm/buildy") do |b|
 
-Docker.make(from: "brianm/buildy", to: "brianm/buildy") do |b|
+Docker.make(from: "ubuntu:12.10", to: "brianm/buildy") do |b|
   b.maintainer "Brian McCallister <brianm@skife.org>"
   b.env "DEBIAN_FRONTEND" => "noninteractive",
         "USER" => "xncore"
